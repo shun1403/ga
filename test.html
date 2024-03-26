@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O,X 퀴즈</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.5s ease;
+    }
+    .container {
+        text-align: center;
+    }
+    .box {
+        width: 150px;
+        height: 150px;
+        border: 2px solid #000;
+        display: inline-block;
+        margin: 0 10px;
+        cursor: pointer;
+    }
+    #result {
+        font-size: 24px;
+        margin-top: 20px;
+    }
+    .correct {
+        background-color: green;
+    }
+    .incorrect {
+        background-color: red;
+    }
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+        display: none;
+    }
+</style>
+</head>
+<body>
+<div class="overlay"></div>
+<div class="container">
+    <h1>O,X 퀴즈</h1>
+    <p>O 또는 X를 선택하세요.</p>
+    <div class="box" id="O">O</div>
+    <div class="box" id="X">X</div>
+    <div id="result"></div>
+</div>
+
+<script>
+    var selected = false;
+
+    function submitAnswer(answer) {
+        if (selected) return;
+        selected = true;
+
+        var correctAnswer = 'O'; // 정답은 여기에 설정
+        var resultElement = document.getElementById('result');
+        var overlay = document.querySelector('.overlay');
+
+        if (answer === correctAnswer) {
+            resultElement.textContent = '정답입니다!';
+            resultElement.classList.remove('incorrect');
+            resultElement.classList.add('correct');
+            document.body.style.backgroundColor = 'green';
+        } else {
+            resultElement.textContent = '틀렸습니다.';
+            resultElement.classList.remove('correct');
+            resultElement.classList.add('incorrect');
+            document.body.style.backgroundColor = 'red';
+        }
+
+        overlay.style.display = 'block';
+        setTimeout(function() {
+            overlay.style.display = 'none';
+            selected = false;
+            resultElement.textContent = '';
+            resultElement.classList.remove('correct', 'incorrect');
+            document.getElementById('O').classList.remove('selected');
+            document.getElementById('X').classList.remove('selected');
+            document.body.style.backgroundColor = '';
+        }, 5000);
+    }
+
+    document.getElementById('O').addEventListener('click', function() {
+        this.classList.add('selected');
+        submitAnswer('O');
+    });
+
+    document.getElementById('X').addEventListener('click', function() {
+        this.classList.add('selected');
+        submitAnswer('X');
+    });
+</script>
+</body>
+</html>
